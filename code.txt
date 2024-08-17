@@ -1,0 +1,120 @@
+views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from blog.models import PostModel
+from .forms import PostForm
+
+
+
+# Create your views here.
+
+def post_list(request):
+    posts = PostModel.objects.all().order_by("-created_at")
+    context = {
+        "posts": posts,
+    }
+    return render(request, "blog/post_list.html", context)
+ 
+
+def post_detail(request, pk):
+    post = PostModel.objects.get(pk=pk)
+    context = {
+        "post": post
+    }
+    return render(request, "blog/post_detail.html", context)
+   
+
+def post_create(request):
+    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post_list')
+        else:
+            form = PostForm()
+    return redirect(request, 'create_post.html', {'form': form})
+ 
+        
+        
+    
+  
+
+def post_edit(request):
+    pass
+
+def post_delete(request, id):
+    post = get_object_or_404(PostModel,id=id)
+    post.delete()
+    return redirect('post_list')
+    
+urls.py
+
+from django.urls import path
+from .import views
+    
+
+urlpatterns = [
+    path('', views.post_list, name="post_list"),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
+    path('post/<int:id>/delete', views.post_delete, name="post_delete"),
+    path('create-post', views.post_create, name='create')
+    
+]
+create_post.html
+
+<form method='POST'>
+    {% csrf_token %}
+    {{ forms.as_p}}
+    <button type="submit">Add Post</button>
+</form>
+
+post_list.html
+
+
+{% extends "base.html" %}
+{%load static%}
+{% block page_title %}
+    <h2 style="color: green;">Blog Post</h2>
+{% endblock page_title %}
+
+{% block page_content %}
+    {% for post in posts %}
+    <div class="post-box">
+        <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</></h3>
+        <small>{{ post.created_at.date }}</small>
+        <p>{{ post.content|slice:":300" }}...</p>
+        </div>
+    {% endfor %}
+    <link rel="stylesheet" href="{% static 'blog/post_list.css'%}">
+    <a href="{% url 'create'%}">Add post</a>
+
+
+{% endblock page_content %}
+
+models.py
+
+from django.db import models
+from django.conf import settings
+
+# Create your models here.
+
+class PostModel(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+   
+forms.py
+from django import forms
+from .models import PostModel
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = PostModel
+        fields = ('title', 'content')
+
+   
+
