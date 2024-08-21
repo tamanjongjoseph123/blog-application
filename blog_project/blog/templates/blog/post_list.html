@@ -1,0 +1,35 @@
+{%extends 'base.html'%}
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post List</title>
+  <link rel="stylesheet" href="{% static 'CSS/post_list.css'%}">
+</head>
+<body>
+
+  {%block page_title%}
+  <h2>Blog Posts</h2>
+  {% endblock page_title%}
+      {%block page_content%} 
+  <div class="container" style="display:flex; flex-wrap: wrap; gap: 20px; width:100%">
+{%for post in posts%}
+    <div style="margin: 10px; width: 10%; background-color: #f7f7f7; padding:20px; margin-bottom:20px; border-radius: 1px solid #ddd; box-shadow: 0 0 10px rgba(0,0,0,0.1);" class="blog">
+      <h3 style="font-weight: bold; font-size: 18px; margin-bottom: 10px; color:#384147; word-break:break-all"><a style="text-decoration: none;" href="{% url 'post_detail' post.pk %}">{{post.title }}</a></h3>
+      <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px; color:#666; word-break:break-all">{{ post.content }}</p>
+      <small style="font-size: 14px; color: #999">{{post.created_at.date}}</small>
+    </div>
+    {% endfor %}
+
+  </div>
+  {%if request.user.is_authenticated %}
+  <a style="text-decoration: none; padding: 10px; background:#384147; color: white; border-radius: 10px; position:relative; top:50px; left: 690px" href="{% url 'create'%}">Add post</a>
+  {% endif%}
+
+  {%endblock page_content%}
+  
+  
+</body>
+</html>

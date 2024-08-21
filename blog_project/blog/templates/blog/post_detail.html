@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{%block page_title%}
+    <h2>{{post.title}}</h2>
+
+{%endblock page_title%}
+
+<div class="box" style="display: flex; justify-content: center;">
+
+{% block page_content%}
+<div class="post-detail-container" style="background-color: #fff; padding: 30px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10 rgba(0,0,0,0.1); ">
+<small style="font-size: 20px; color: #666; margin-bottom:15px; display: block;">
+    {{post.created_at.date}}
+</small>
+<p style="font-size: 20px; line-height: 1.5px; margin-bottom: 25px; text-align: justify">{{post.content}}</p>
+{%if request.user.is_authenticated and  post.author == request.user %}
+
+<a href="{% url "post_delete" post.id %}"><button style=" background:linear-gradient(24deg, pink, purple); color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor:pointer; font-size: 18px;">Delete</button></a>
+<a href="{% url "edit" post.id %}"><button style=" background:linear-gradient(24deg, pink, purple); color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor:pointer; font-size: 18px;">Edit</button></a>
+{% comment %} <a href="{% url "edit" post.id %}"><button>Edit</button></a> {% endcomment %}
+{%endif%}
+</div>
+{% endblock page_content%}
+</div>
+
+<style>
+    .box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .post-detail-container{
+        background-color: #f9f9f9;
+        padding: 20px;
+    }
+   
+</style>

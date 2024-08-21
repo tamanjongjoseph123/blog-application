@@ -1,0 +1,35 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My Personal Blog</title>
+    <link rel="stylesheet" href="{% static 'CSS/j.css'%}">
+</head>
+<header>
+    <h1>Welcome   {{request.user.username}}!<h1>
+        <nav>
+            <ul>
+             <li><a href="{% url 'post_list' %}" class="active">Home</a></li>
+             <li><a href="{% url 'register' %}">Register</a></li>
+             <li><a href="{% url 'login' %}">Login</a></li>
+             <li><a href="{% url 'logout_view' %}">Logout</a></li>
+             </ul>
+        </nav>  
+</header>
+    
+
+<body>
+<div class="container">
+  
+{% block page_title %}{% endblock page_title %}
+<div class="box">
+        {% block page_content %}
+        
+    </div>
+        {% endblock page_content %}
+</div>
+    </div>
+</body>
+
+</html>

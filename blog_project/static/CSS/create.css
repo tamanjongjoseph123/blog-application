@@ -1,0 +1,34 @@
+.center-form{
+    width: 50%;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+}
+textarea{
+    resize: none;
+}
+.center-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #56be57;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition:.3s;
+    
+}
+.center-form button:hover{
+    background-color: #2e6c30;
+}
+.center-form input, .center-form textarea{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+}
